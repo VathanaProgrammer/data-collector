@@ -1,27 +1,20 @@
 <template>
-  <div class="space-y-4">
-    <h2 class="text-xl font-bold">{{ $t('welcome') }}</h2>
-
-    <input
-      type="text"
-      placeholder="Name"
-      class="w-full p-3 rounded border border-gray-300"
-    />
-
-    <input
-      type="tel"
-      placeholder="Phone Number"
-      class="w-full p-3 rounded border border-gray-300"
-    />
-
-    <button class="w-full bg-blue-600 text-white py-3 rounded mt-4">
-      Take Photo
-    </button>
+  <div class="home-container">
+    <Map />
   </div>
 </template>
 
 <script lang="ts">
+import Map from '../components/Map.vue';
 export default {
   name: 'Home',
+  components: { Map },
 }
 </script>
+
+<style scoped>
+.home-container {
+  height: calc(100vh - 128px);
+  overflow: hidden;
+}
+</style>
