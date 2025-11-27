@@ -1,6 +1,7 @@
 <template>
-  <div class="home-container">
+  <div class="home-container h-full w-full">
     <Map />
+
   </div>
 </template>
 
@@ -14,7 +15,8 @@ export default {
 
 <style scoped>
 .home-container {
-  height: calc(100vh - 128px);
+  height: 100%;
   overflow: hidden;
 }
+
 </style>
