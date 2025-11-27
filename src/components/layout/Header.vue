@@ -14,10 +14,10 @@
       </button>
 
       <!-- User / Login -->
-      <template v-if="isAuthenticated">
+      <template v-if="user">
         <!-- User icon -->
         <img
-          v-if="user && user.isAuthenticated"
+          v-if="user.profile_url"
           :src="user.profile_url"
           alt="User"
           class="w-8 h-8 rounded-full border border-white"
@@ -26,6 +26,7 @@
           {{ userInitials }}
         </div>
       </template>
+
       <template v-else>
         <button @click="goLogin" class="text-white hover:text-gray-300 font-semibold">
           Login
@@ -35,48 +36,55 @@
   </header>
 </template>
 
-<<script lang="ts">
-import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useUserStore } from '@/store/userStore';
-import router from '@/router/router.js'; // <-- import router instance directly
+<script lang="ts">
+import { defineComponent, ref, computed, onMounted } from "vue";
+import { useUserStore } from "@/store/userStore";
+import API from "@/api";
+import router from "@/router/router";
 
-export default {
-  name: 'Header',
-  emits: ['show-lang-modal'],
-  data() {
-    const { locale } = useI18n();
-    return {
-      currentLang: ref(locale.value),
+export default defineComponent({
+  name: "Header",
+  emits: ["show-lang-modal"],
+  setup() {
+    const userStore = useUserStore();
+    const currentLang = ref("en");
+
+    // Fetch user from backend (secure) on mount
+    const fetchUser = async () => {
+      try {
+        const res = await API.get("/user"); // backend validates httpOnly JWT
+        if (res.data.success) {
+          userStore.setUser(res.data.data);
+        } else {
+          userStore.clearUser();
+        }
+      } catch (err) {
+        userStore.clearUser();
+        console.error("Fetch user failed:", err);
+      }
     };
-  },
-  computed: {
-    userStore() {
-      return useUserStore();
-    },
-    isAuthenticated(): boolean {
-      return this.userStore.isAuthenticated;
-    },
-    user() {
-      return this.userStore.user;
-    },
-    userInitials(): string {
-      if (!this.user?.username) return '';
-      return this.user.username
-        .split(' ')
-        .map((n: string) => n[0])
-        .join('')
-        .toUpperCase();
-    },
-  },
-  methods: {
-    goLogin() {
-      router.push('/sign-in'); // <-- now works
-    },
-  },
-};
-</script>
 
+    onMounted(() => {
+      fetchUser();
+    });
+
+    const user = computed(() => userStore.user);
+
+    const userInitials = computed(() => {
+      if (!user.value?.username) return "";
+      return user.value.username
+        .split(" ")
+        .map((n: string) => n[0])
+        .join("")
+        .toUpperCase();
+    });
+
+    const goLogin = () => router.push("/sign-in");
+
+    return { currentLang, user, userInitials, goLogin };
+  },
+});
+</script>
 
 <style scoped>
 header img {
