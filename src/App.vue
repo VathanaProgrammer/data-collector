@@ -147,16 +147,31 @@ export default defineComponent({
         form.append("name", this.nameInput);
         form.append("phone", this.phoneInput);
         this.photos.forEach(file => form.append("photos[]", file));
-        API.post("/save", form, { headers: { "Content-Type": "multipart/form-data" } });
+
+        const res = await API.post("/save", form, {
+          headers: { "Content-Type": "multipart/form-data" }
+        });
+
+        // Clear inputs and revoke previews
         this.nameInput = "";
         this.phoneInput = "";
         this.photos.forEach(p => URL.revokeObjectURL(p.preview));
         this.photos = [];
         this.showAddModal = false;
-      } catch (err) {
+
+        // Show alert
+        if (res.data.success) {
+          alert(res.data.msg || "Entry submitted successfully!");
+        } else {
+          alert(res.data.msg || "Submission failed");
+        }
+      } catch (err: any) {
         console.error("Upload failed:", err);
+        // Show error alert
+        alert(err.response?.data?.msg || "An error occurred while submitting entry.");
       }
     }
+
   }
 });
 </script>
