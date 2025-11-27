@@ -1,6 +1,12 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
+    "ignoreDeprecations": "6.0"
+    ,
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    },
     /* required so allowImportingTsExtensions is allowed */
     "noEmit": true,
     /* allow .ts extension in ESM imports */
