@@ -146,7 +146,12 @@ export default defineComponent({
         const form = new FormData();
         form.append("name", this.nameInput);
         form.append("phone", this.phoneInput);
-        this.photos.forEach(file => form.append("photos[]", file));
+
+        this.photos.forEach(file => {
+          const fileName = file.name || `photo-${Date.now()}.jpg`;
+          const fileType = file.type || "image/jpeg"; // fallback for iPhone
+          form.append("photos[]", file, fileName);
+        });
 
         const res = await API.post("/save", form, {
           headers: { "Content-Type": "multipart/form-data" }
@@ -167,11 +172,9 @@ export default defineComponent({
         }
       } catch (err: any) {
         console.error("Upload failed:", err);
-        // Show error alert
         alert(err.response?.data?.msg || "An error occurred while submitting entry.");
       }
     }
-
   }
 });
 </script>
