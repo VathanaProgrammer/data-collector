@@ -89,7 +89,7 @@ import enFlag from "@/assets/images/en.webp";
 import khFlag from "@/assets/images/kh.webp";
 import Header from "./components/layout/Header.vue";
 import Footer from "./components/layout/Footer.vue";
-import axios from "axios";
+import API from "./api";
 
 interface PreviewFile extends File {
   preview: string;
@@ -147,7 +147,7 @@ export default defineComponent({
         form.append("name", this.nameInput);
         form.append("phone", this.phoneInput);
         this.photos.forEach(file => form.append("photos[]", file));
-        await axios.post("https://your-api.com/api/save", form, { headers: { "Content-Type": "multipart/form-data" } });
+        API.post("/save", form, { headers: { "Content-Type": "multipart/form-data" } });
         this.nameInput = "";
         this.phoneInput = "";
         this.photos.forEach(p => URL.revokeObjectURL(p.preview));
