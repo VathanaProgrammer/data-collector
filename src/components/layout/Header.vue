@@ -35,11 +35,11 @@
   </header>
 </template>
 
-<script lang="ts">
+<<script lang="ts">
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/store/userStore';
-import { useRouter } from 'vue-router';
+import router from '@/router/router.js'; // <-- import router instance directly
 
 export default {
   name: 'Header',
@@ -71,12 +71,12 @@ export default {
   },
   methods: {
     goLogin() {
-      const router = useRouter();
-      router.push('/sign-in');
+      router.push('/sign-in'); // <-- now works
     },
   },
 };
 </script>
+
 
 <style scoped>
 header img {
