@@ -17,21 +17,38 @@
     </transition>
 
     <transition name="slide-up">
-      <div v-if="showAddModal" class="absolute bottom-0 left-0 right-0 bg-white w-full rounded-t-2xl p-4 shadow-lg z-50">
+      <div v-if="showAddModal"
+        class="absolute bottom-0 left-0 right-0 bg-white w-full rounded-t-2xl p-4 shadow-lg z-50">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-lg font-bold">Add New Entry</h3>
           <button @click="showAddModal = false" class="text-gray-500 hover:text-gray-700">&times;</button>
         </div>
+        <!-- Preview selected images -->
+        <div v-if="photos.length" class="grid grid-cols-3 gap-2 mt-2 mb-2">
+          <div v-for="(file, index) in photos" :key="index" class="relative">
+            <img :src="file.preview" alt="preview" class="w-full h-24 object-cover rounded" />
+            <button @click="removePhoto(index)"
+              class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">×</button>
+          </div>
+        </div>
+
 
         <div class="space-y-4">
           <input v-model="nameInput" type="text" placeholder="Name" class="w-full p-3 rounded border border-gray-300" />
-          <input v-model="phoneInput" type="tel" placeholder="Phone Number" class="w-full p-3 rounded border border-gray-300" />
+          <input v-model="phoneInput" type="tel" placeholder="Phone Number"
+            class="w-full p-3 rounded border border-gray-300" />
 
-          <button class="w-full bg-blue-600 text-white py-3 rounded" @click="openCamera">Take Photo</button>
-          <button class="w-full bg-gray-800 text-white py-3 rounded" @click="openGallery">Select Photos</button>
+          <div class="flex space-x-2">
+            <button class="flex-1 bg-blue-600 text-white py-3 rounded" @click="openCamera">Take Photo</button>
+            <button class="flex-1 bg-gray-800 text-white py-3 rounded" @click="openGallery">Select Photos</button>
+          </div>
 
-          <input ref="cameraInput" type="file" accept="image/*" capture="environment" class="hidden" @change="handleCameraPhoto" />
-          <input ref="galleryInput" type="file" accept="image/*" multiple class="hidden" @change="handleGalleryPhotos" />
+          <input ref="cameraInput" type="file" accept="image/*" capture="environment" class="hidden"
+            @change="handleCameraPhoto" />
+          <input ref="galleryInput" type="file" accept="image/*" multiple class="hidden"
+            @change="handleGalleryPhotos" />
+
+          <button class="w-full bg-green-600 text-white py-3 rounded" @click="submitEntry">Submit Entry</button>
         </div>
       </div>
     </transition>
@@ -42,23 +59,23 @@
     </transition>
 
     <transition name="slide-up">
-      <div v-if="showLangModal" class="absolute bottom-0 left-0 right-0 bg-white w-full rounded-t-2xl p-4 shadow-lg z-50">
+      <div v-if="showLangModal"
+        class="absolute bottom-0 left-0 right-0 bg-white w-full rounded-t-2xl p-4 shadow-lg z-50">
         <h3 class="text-lg font-bold mb-4">Select Language</h3>
         <ul class="space-y-2">
           <li>
             <button @click="switchLang('en')" class="w-full flex items-center p-3 rounded hover:bg-gray-100">
-              <img :src="enFlag" class="w-6 h-6 mr-3" alt="English" />
-              English
+              <img :src="enFlag" class="w-6 h-6 mr-3" alt="English" /> English
             </button>
           </li>
           <li>
             <button @click="switchLang('kh')" class="w-full flex items-center p-3 rounded hover:bg-gray-100">
-              <img :src="khFlag" class="w-6 h-6 mr-3" alt="Khmer" />
-              Khmer
+              <img :src="khFlag" class="w-6 h-6 mr-3" alt="Khmer" /> Khmer
             </button>
           </li>
         </ul>
-        <button @click="showLangModal = false" class="mt-4 w-full bg-gray-200 text-gray-700 py-3 rounded font-bold hover:bg-gray-300 transition">
+        <button @click="showLangModal = false"
+          class="mt-4 w-full bg-gray-200 text-gray-700 py-3 rounded font-bold hover:bg-gray-300 transition">
           Close
         </button>
       </div>
@@ -74,6 +91,10 @@ import Header from "./components/layout/Header.vue";
 import Footer from "./components/layout/Footer.vue";
 import axios from "axios";
 
+interface PreviewFile extends File {
+  preview: string;
+}
+
 export default defineComponent({
   name: "App",
   components: { Header, Footer },
@@ -83,7 +104,7 @@ export default defineComponent({
       showLangModal: false,
       nameInput: "",
       phoneInput: "",
-      photos: [] as File[],
+      photos: [] as PreviewFile[],
       enFlag,
       khFlag,
     };
@@ -101,12 +122,25 @@ export default defineComponent({
     },
     handleCameraPhoto(event: Event) {
       const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) this.photos.push(file);
+      if (file) this.addPreview(file);
     },
     handleGalleryPhotos(event: Event) {
       const files = (event.target as HTMLInputElement).files;
-      if (files) this.photos.push(...Array.from(files));
+      if (files) Array.from(files).forEach(f => this.addPreview(f));
     },
+    addPreview(file: File) {
+      const previewFile = file as PreviewFile;
+      previewFile.preview = URL.createObjectURL(file);
+      this.photos.push(previewFile);
+    },
+    removePhoto(index: number) {
+      const photo = this.photos[index];
+      if (photo) {
+        URL.revokeObjectURL(photo.preview);
+        this.photos.splice(index, 1);
+      }
+    },
+
     async submitEntry() {
       try {
         const form = new FormData();
@@ -116,6 +150,7 @@ export default defineComponent({
         await axios.post("https://your-api.com/api/save", form, { headers: { "Content-Type": "multipart/form-data" } });
         this.nameInput = "";
         this.phoneInput = "";
+        this.photos.forEach(p => URL.revokeObjectURL(p.preview));
         this.photos = [];
         this.showAddModal = false;
       } catch (err) {
@@ -128,14 +163,38 @@ export default defineComponent({
 
 <style scoped>
 main {
-  height: calc(100vh - 128px); /* HEADER + FOOTER */
+  height: calc(100vh - 128px);
+  /* HEADER + FOOTER */
   overflow: hidden;
 }
-.slide-up-enter-active, .slide-up-leave-active { transition: transform 0.3s ease; }
-.slide-up-enter-from, .slide-up-leave-to { transform: translateY(100%); }
-.slide-up-enter-to, .slide-up-leave-from { transform: translateY(0%); }
 
-.fade-enter-active, .fade-leave-active { transition: opacity 0.25s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-.fade-enter-to, .fade-leave-from { opacity: 1; }
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(100%);
+}
+
+.slide-up-enter-to,
+.slide-up-leave-from {
+  transform: translateY(0%);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
 </style>
