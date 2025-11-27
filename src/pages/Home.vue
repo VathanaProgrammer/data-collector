@@ -13,7 +13,8 @@ export default {
   components: { Map },
   mounted(){
     const userStore = useUserStore();
-    alert("Welcome back, " + userStore.user.name || "User" );
+    console.log("User Info:", userStore.user.username);
+    alert("Welcome back, " + userStore.user.username || "User" );
   }
 }
 </script>
