@@ -23,15 +23,17 @@ export default defineComponent({
   name: "FloatingAddButton",
   emits: ["show-add-modal"],
   setup(_, { emit }) {
-    const posX = ref<number>(window.innerWidth - 80);
-    const posY = ref<number>(window.innerHeight - 80);
-    const dragging = ref<boolean>(false);
-    const rotation = ref<number>(0);
+    const posX = ref(window.innerWidth - 80);
+    const posY = ref(window.innerHeight - 80);
+    const dragging = ref(false);
     const offset = { x: 0, y: 0 };
+    const rotation = ref(0);
+    const touchStartTime = ref(0);
 
     const startDrag = (e: MouseEvent | TouchEvent) => {
       dragging.value = true;
-      let clientX = 0, clientY = 0;
+      let clientX = 0,
+        clientY = 0;
 
       if (e instanceof MouseEvent) {
         clientX = e.clientX;
@@ -41,6 +43,7 @@ export default defineComponent({
       } else if (e instanceof TouchEvent && e.touches[0]) {
         clientX = e.touches[0].clientX;
         clientY = e.touches[0].clientY;
+        touchStartTime.value = Date.now();
         window.addEventListener("touchmove", drag);
         window.addEventListener("touchend", stopDrag);
       }
@@ -51,8 +54,8 @@ export default defineComponent({
 
     const drag = (e: MouseEvent | TouchEvent) => {
       if (!dragging.value) return;
-
-      let clientX = 0, clientY = 0;
+      let clientX = 0,
+        clientY = 0;
       if (e instanceof MouseEvent) {
         clientX = e.clientX;
         clientY = e.clientY;
@@ -66,29 +69,34 @@ export default defineComponent({
       posX.value = clientX - offset.x;
       posY.value = clientY - offset.y;
 
-      // Keep inside viewport
       posX.value = Math.max(0, Math.min(posX.value, window.innerWidth - 56));
       posY.value = Math.max(0, Math.min(posY.value, window.innerHeight - 56));
 
-      // Rotate button while dragging
       rotation.value += 5;
     };
 
-    const stopDrag = () => {
+    const stopDrag = (e?: TouchEvent | MouseEvent) => {
       dragging.value = false;
+
+      if (e instanceof TouchEvent) {
+        const touchDuration = Date.now() - touchStartTime.value;
+        if (touchDuration < 200) {
+          // Treat short tap as click
+          emit("show-add-modal");
+        }
+      } else {
+        // emit click for desktop mouse
+        emit("show-add-modal");
+      }
+
       window.removeEventListener("mousemove", drag);
       window.removeEventListener("mouseup", stopDrag);
       window.removeEventListener("touchmove", drag);
       window.removeEventListener("touchend", stopDrag);
     };
 
-    const handleClick = () => {
-      if (!dragging.value) {
-        emit("show-add-modal");
-      }
-    };
-
-    return { posX, posY, rotation, startDrag, handleClick };
+    return { posX, posY, rotation, startDrag };
   },
 });
+
 </script>
