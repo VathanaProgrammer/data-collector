@@ -26,9 +26,7 @@
         :class="{ 'kh': langStore.currentLang === 'kh' }">
 
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-gray-800" :class="{ 'kh': langStore.currentLang === 'kh' }"
-            :style="langStore.currentLang === 'kh' ? 'font-family: Noto Sans Khmer, Siemreap, Roboto, sans-serif !important;' : ''">{{ currentText.addEntryHeader }}
-          </h3>
+          <h3 class="text-lg font-semibold text-gray-800" :class="{ 'kh': langStore.currentLang === 'kh' } ">{{ currentText.addEntryHeader }}</h3>
           <button @click="showAddModal = false"
             class="text-gray-500 p-3 text-2xl hover:text-gray-700 rounded-full flex items-center justify-center">
             &times;
@@ -40,7 +38,7 @@
           <div v-for="(file, index) in photos" :key="index" class="relative">
             <img :src="file.preview" alt="preview" class="w-full h-24 object-cover rounded" />
             <button @click="removePhoto(index)"
-              class="absolute top-1 right-1 bg-red-600ថ text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">×</button>
+              class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">×</button>
           </div>
         </div>
 
@@ -265,6 +263,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 main {
   height: calc(100vh - 128px);
   overflow: hidden;
