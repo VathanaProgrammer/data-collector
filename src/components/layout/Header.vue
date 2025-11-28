@@ -50,24 +50,9 @@ export default defineComponent({
     const currentLang = ref("en");
 
     // Fetch user from backend (secure) on mount
-    const fetchUser = async () => {
-      try {
-        const res = await API.get("/user"); // backend validates httpOnly JWT
-        if (res.data.success) {
-          userStore.setUser(res.data.data);
-        } else {
-          userStore.clearUser();
-        }
-
-        console.log("Fetched user:", res.data.data);
-      } catch (err) {
-        userStore.clearUser();
-        console.error("Fetch user failed:", err);
-      }
-    };
 
     onMounted(() => {
-      fetchUser();
+      
     });
 
     const user = computed(() => userStore.user);
