@@ -38,7 +38,7 @@
           <div v-for="(file, index) in photos" :key="index" class="relative">
             <img :src="file.preview" alt="preview" class="w-full h-24 object-cover rounded" />
             <button @click="removePhoto(index)"
-              class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">×</button>
+              class="absolute top-1 right-1 bg-red-600ថ text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">×</button>
           </div>
         </div>
 
