@@ -44,7 +44,7 @@
             <button class="flex-1 bg-blue-600 text-white py-3 rounded" @click="openCamera">Take Photo</button>
             <button class="flex-1 bg-gray-800 text-white py-3 rounded" @click="openGallery">Select Photos</button>
           </div>
-          
+
           <input ref="cameraInput" type="file" accept="image/*" capture="environment" class="hidden"
             @change="handleCameraPhoto" />
           <input ref="galleryInput" type="file" accept="image/*" multiple class="hidden"
@@ -153,6 +153,7 @@ export default defineComponent({
         console.log("Current user:", userStore.user);
 
         const userId = userStore.user?.id;
+        const collector_id = userId;
         console.log("User ID:", userId);
 
         // Get current geolocation (latitude, longitude)
@@ -180,7 +181,7 @@ export default defineComponent({
         form.append("address_detail", this.addressInput);
         form.append("latitude", latitude ?? "");
         form.append("longitude", longitude ?? "");
-        form.append("user_id", userId);
+        form.append("collector_id", userId);
 
         this.photos.forEach(file => {
           const fileName = file.name || `photo-${Date.now()}.jpg`;
