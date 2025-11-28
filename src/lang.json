@@ -1,0 +1,26 @@
+{
+  "en": {
+    "addEntryHeader": "Add New Drop Off",
+    "namePlaceholder": "Name (Optional)",
+    "phonePlaceholder": "Phone Number (Optional)",
+    "addressPlaceholder": "Address Details (Optional)",
+    "takePhoto": "Take Photo",
+    "selectPhotos": "Select Photos",
+    "submit": "Submit Entry",
+    "selectLanguage": "Select Language",
+    "close": "Close",
+    "submitting": "Submitting..."
+  },
+  "kh": {
+    "addEntryHeader": "បន្ថែមការដាក់ចេញថ្មី",
+    "namePlaceholder": "ឈ្មោះ (មិនចាំបាច់)",
+    "phonePlaceholder": "លេខទូរស័ព្ទ (មិនចាំបាច់)",
+    "addressPlaceholder": "អាសយដ្ឋាន (មិនចាំបាច់)",
+    "takePhoto": "ថតរូប",
+    "selectPhotos": "ជ្រើសរើសរូបភាព",
+    "submit": "ដាក់ស្នើ",
+    "selectLanguage": "ជ្រើសរើសភាសា",
+    "close": "បិទ",
+    "submitting": "កំពុងដាក់ស្នើ..."
+  }
+}

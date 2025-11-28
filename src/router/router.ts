@@ -14,10 +14,9 @@ const routes = [
         component: SignUp,
     }, {
         path: '/',
-        name: 'App',
         component: App,
         children: [
-            { path: '', component: Home }
+            { path: '', component: Home, name: 'App', }
         ]
     }
 
