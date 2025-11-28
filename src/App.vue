@@ -263,15 +263,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-@import "tailwindcss";
-
-body {
-  font-family: 'Siemreap', 'Roboto', ui-sans-serif, system-ui;
-}
-
-.kh {
-  font-family: 'Siemreap', 'Roboto', ui-sans-serif, system-ui;
-}
 
 main {
   height: calc(100vh - 128px);
