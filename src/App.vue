@@ -44,7 +44,7 @@
             <button class="flex-1 bg-blue-600 text-white py-3 rounded" @click="openCamera">Take Photo</button>
             <button class="flex-1 bg-gray-800 text-white py-3 rounded" @click="openGallery">Select Photos</button>
           </div>
-
+          
           <input ref="cameraInput" type="file" accept="image/*" capture="environment" class="hidden"
             @change="handleCameraPhoto" />
           <input ref="galleryInput" type="file" accept="image/*" multiple class="hidden"
