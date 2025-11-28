@@ -28,68 +28,82 @@ export default defineComponent({
     const dragging = ref<boolean>(false);
     const rotation = ref<number>(0);
     const offset = { x: 0, y: 0 };
+    const dragThreshold = 5; // pixels to distinguish drag vs tap
 
-    // Start dragging
+    let startX = 0;
+    let startY = 0;
+
     const startDrag = (e: MouseEvent | TouchEvent) => {
       dragging.value = true;
-      let clientX = 0, clientY = 0;
 
       if (e instanceof MouseEvent) {
-        clientX = e.clientX;
-        clientY = e.clientY;
+        startX = e.clientX;
+        startY = e.clientY;
+        offset.x = startX - posX.value;
+        offset.y = startY - posY.value;
         window.addEventListener("mousemove", drag);
         window.addEventListener("mouseup", stopDrag);
       } else if (e instanceof TouchEvent && e.touches[0]) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        offset.x = startX - posX.value;
+        offset.y = startY - posY.value;
         window.addEventListener("touchmove", drag);
         window.addEventListener("touchend", stopDrag);
       }
-
-      offset.x = clientX - posX.value;
-      offset.y = clientY - posY.value;
     };
 
-    // Dragging logic
     const drag = (e: MouseEvent | TouchEvent) => {
       if (!dragging.value) return;
 
       let clientX = 0, clientY = 0;
+
       if (e instanceof MouseEvent) {
         clientX = e.clientX;
         clientY = e.clientY;
       } else if (e instanceof TouchEvent && e.touches[0]) {
         clientX = e.touches[0].clientX;
         clientY = e.touches[0].clientY;
-      } else {
-        return;
-      }
+      } else return;
 
       posX.value = clientX - offset.x;
       posY.value = clientY - offset.y;
 
-      // Keep button inside viewport
+      // Keep inside viewport
       posX.value = Math.max(0, Math.min(posX.value, window.innerWidth - 56));
       posY.value = Math.max(0, Math.min(posY.value, window.innerHeight - 56));
 
-      // Rotate button while dragging
       rotation.value += 5;
     };
 
-    // Stop dragging
-    const stopDrag = () => {
+    const stopDrag = (e?: MouseEvent | TouchEvent) => {
       dragging.value = false;
-      window.removeEventListener("mousemove", drag);
-      window.removeEventListener("mouseup", stopDrag);
-      window.removeEventListener("touchmove", drag);
-      window.removeEventListener("touchend", stopDrag);
+
+      if (e) {
+        let endX = 0, endY = 0;
+
+        if (e instanceof MouseEvent) {
+          endX = e.clientX;
+          endY = e.clientY;
+          window.removeEventListener("mousemove", drag);
+          window.removeEventListener("mouseup", stopDrag);
+        } else if (e instanceof TouchEvent && e.changedTouches[0]) {
+          endX = e.changedTouches[0].clientX;
+          endY = e.changedTouches[0].clientY;
+          window.removeEventListener("touchmove", drag);
+          window.removeEventListener("touchend", stopDrag);
+        }
+
+        // Treat as tap if movement is very small
+        if (Math.abs(endX - startX) < dragThreshold && Math.abs(endY - startY) < dragThreshold) {
+          emit("show-add-modal");
+        }
+      }
     };
 
-    // Handle click / tap
     const handleClick = () => {
-      if (!dragging.value) {
-        emit("show-add-modal");
-      }
+      // Desktop click
+      emit("show-add-modal");
     };
 
     return { posX, posY, rotation, startDrag, handleClick };
