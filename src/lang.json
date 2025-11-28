@@ -9,7 +9,8 @@
     "submit": "Submit Entry",
     "selectLanguage": "Select Language",
     "close": "Close",
-    "submitting": "Submitting..."
+    "submitting": "Submitting...",
+    "logout": "Logout"
   },
   "kh": {
     "addEntryHeader": "បន្ថែមការដាក់ចេញថ្មី",
@@ -21,6 +22,7 @@
     "submit": "ដាក់ស្នើ",
     "selectLanguage": "ជ្រើសរើសភាសា",
     "close": "បិទ",
-    "submitting": "កំពុងដាក់ស្នើ..."
+    "submitting": "កំពុងដាក់ស្នើ...",
+    "logout": "ចាកចេញ"
   }
 }

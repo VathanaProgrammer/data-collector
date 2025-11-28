@@ -11,6 +11,7 @@ export interface LangStrings {
   selectLanguage: string;
   close: string;
   submitting: string;
+  logout: string;
 }
 
 export interface LangData {

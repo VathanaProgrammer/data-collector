@@ -6,10 +6,8 @@
 
     <div class="flex justify-end items-center space-x-2">
       <!-- Language button with flag -->
-      <button
-        @click="$emit('show-lang-modal')"
-        class="text-white font-bold hover:text-gray-300 transition flex items-center space-x-1"
-      >
+      <button @click="$emit('show-lang-modal')"
+        class="text-white font-bold hover:text-gray-300 transition flex items-center space-x-1">
         <img v-if="currentFlag" :src="currentFlag" alt="Flag" class="w-5 h-5 rounded-sm" />
         <span>{{ currentLang.toUpperCase() }}</span>
       </button>
@@ -18,7 +16,7 @@
       <div v-if="user" class="relative">
         <button @click="toggleProfilePopup" class="flex items-center space-x-2 focus:outline-none">
           <img v-if="user.isAuthenticated" :src="user.profile_url" alt="User"
-               class="w-8 h-8 rounded-full border border-white" />
+            class="w-8 h-8 rounded-full border border-white" />
           <div v-else class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-sm">
             {{ userInitials }}
           </div>
@@ -26,18 +24,21 @@
 
         <!-- Profile Popup -->
         <transition name="fade">
-          <div v-if="showProfilePopup" class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg z-50 border border-gray-200">
+          <div v-if="showProfilePopup"
+            class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg z-50 border border-gray-200">
             <div class="p-4 flex flex-col items-center space-y-2">
-              <img :src="user.profile_url || 'https://static.vecteezy.com/system/resources/previews/013/042/571/original/default-avatar-profile-icon-social-media-user-photo-in-flat-style-vector.jpg'" class="w-16 h-16 rounded-full object-cover" />
+              <img
+                :src="user.profile_url || 'https://static.vecteezy.com/system/resources/previews/013/042/571/original/default-avatar-profile-icon-social-media-user-photo-in-flat-style-vector.jpg'"
+                class="w-16 h-16 rounded-full object-cover" />
               <div class="text-center">
                 <p class="font-semibold text-gray-800">{{ user.username || 'unknow' }}</p>
               </div>
             </div>
             <div class="border-t border-gray-200"></div>
             <button @click="logout"
-                    class="w-full flex items-center justify-center space-x-2 py-3 hover:bg-gray-100 transition rounded-b-lg text-red-600 font-semibold">
+              class="w-full flex items-center justify-center space-x-2 py-3 hover:bg-gray-100 transition rounded-b-lg text-red-600 font-semibold">
               <Icon icon="mdi:logout" width="20" height="20" />
-              <span>Logout</span>
+              <span :class="{ kh: langStore.currentLang === 'kh' }">{{ currentText.logout}}</span>
             </button>
           </div>
         </transition>
@@ -56,6 +57,11 @@ import { useUserStore } from "@/store/userStore";
 import { useLangStore } from "@/store/langStore";
 import router from "@/router/router";
 import { Icon } from '@iconify/vue';
+import langDataJson from "@/lang.json";
+import type { LangData } from "@/types/lang";
+
+const langData = langDataJson as LangData;
+
 
 export default defineComponent({
   name: "Header",
@@ -64,6 +70,10 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const langStore = useLangStore();
+
+    // Use the top-level langData
+    const currentText = computed(() => langData[langStore.currentLang as keyof LangData]);
+
     const showProfilePopup = ref(false);
     const defaultAvatar = '/assets/images/default-avatar.png';
 
@@ -81,7 +91,7 @@ export default defineComponent({
     };
 
     const logout = () => {
-      userStore.clearUser(); // Make sure your userStore has a logout action
+      userStore.clearUser();
       showProfilePopup.value = false;
       router.push("/sign-in");
     };
@@ -96,8 +106,11 @@ export default defineComponent({
       toggleProfilePopup,
       logout,
       defaultAvatar,
+      currentText,
+      langStore
     };
-  },
+  }
+
 });
 </script>
 
@@ -105,13 +118,19 @@ export default defineComponent({
 header img {
   object-fit: cover;
 }
-.fade-enter-active, .fade-leave-active {
+
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.2s ease;
 }
-.fade-enter-from, .fade-leave-to {
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
-.fade-enter-to, .fade-leave-from {
+
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
 }
 </style>
