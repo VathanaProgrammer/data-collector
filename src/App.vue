@@ -149,6 +149,7 @@ export default defineComponent({
       try {
         // Get current user ID from store
         const userStore = useUserStore();
+        console.log("Submitting entry for user:", userStore?.user);
         const userId = userStore?.user?.id; // adjust if using Pinia or Vuex differently
 
         // Get current geolocation (latitude, longitude)
