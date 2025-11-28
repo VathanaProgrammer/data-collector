@@ -26,7 +26,9 @@
         :class="{ 'kh': langStore.currentLang === 'kh' }">
 
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold" :class="{ 'kh': langStore.currentLang === 'kh' } ">{{ currentText.addEntryHeader }}</h3>
+          <h3 class="text-lg font-bold" :class="{ 'kh': langStore.currentLang === 'kh' }"
+            :style="langStore.currentLang === 'kh' ? 'font-family: Noto Sans Khmer, Siemreap, Roboto, sans-serif !important;' : ''">
+          </h3>
           <button @click="showAddModal = false"
             class="text-gray-500 p-3 text-2xl hover:text-gray-700 rounded-full flex items-center justify-center">
             &times;
@@ -263,7 +265,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 main {
   height: calc(100vh - 128px);
   overflow: hidden;
