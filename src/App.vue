@@ -41,7 +41,7 @@
             class="w-full p-3 rounded border border-gray-300" />
 
           <div class="flex space-x-2">
-            <!-- <button class="flex-1 bg-blue-600 text-white py-3 rounded" @click="openCamera">Take Photo</button> -->
+            <button class="flex-1 bg-blue-600 text-white py-3 rounded" @click="openCamera">Take Photo</button>
             <button class="flex-1 bg-gray-800 text-white py-3 rounded" @click="openGallery">Select Photos</button>
           </div>
 
