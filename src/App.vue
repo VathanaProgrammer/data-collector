@@ -8,6 +8,8 @@
       <router-view />
     </main>
 
+    <AlertModal />
+
     <!-- Footer -->
     <Footer @show-add-modal="showAddModal = true" :class="{ 'kh': langStore.currentLang === 'kh' }" />
 
@@ -135,6 +137,7 @@ import langDataJson from "@/lang.json";
 import type { LangData } from "@/types/lang";
 import { Icon } from '@iconify/vue';
 import FloatingAddButton from "./components/FloatingAddButton.vue";
+import AlertModal from "./components/AlertModal.vue";
 
 const langData = langDataJson as LangData;
 
@@ -144,7 +147,7 @@ interface PreviewFile extends File {
 
 export default defineComponent({
   name: "App",
-  components: { Header, Footer, Icon, FloatingAddButton },
+  components: { Header, Footer, Icon, FloatingAddButton, AlertModal },
   data() {
     return {
       showAddModal: false,
