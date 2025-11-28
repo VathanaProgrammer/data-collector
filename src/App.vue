@@ -26,7 +26,7 @@
         :class="{ 'kh': langStore.currentLang === 'kh' }">
 
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold" :class="{ 'kh': langStore.currentLang === 'kh' }"
+          <h3 class="text-lg font-bold text-gray-800" :class="{ 'kh': langStore.currentLang === 'kh' }"
             :style="langStore.currentLang === 'kh' ? 'font-family: Noto Sans Khmer, Siemreap, Roboto, sans-serif !important;' : ''">
           </h3>
           <button @click="showAddModal = false"
