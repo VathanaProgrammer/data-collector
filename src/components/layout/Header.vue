@@ -2,7 +2,7 @@
   <header class="bg-gray-900 text-white h-16 flex items-center justify-between px-4 shadow-md relative">
     <div class="w-12"></div>
 
-    <h1 class="text-lg font-bold text-center flex-1">LUXE</h1>
+    <h1 class="text-lg font-bold text-center flex-1">SOB</h1>
 
     <div class="flex justify-end items-center space-x-2">
       <!-- Language button with flag -->

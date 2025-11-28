@@ -24,7 +24,7 @@
     <transition name="slide-up">
       <div v-if="showAddModal" class="absolute bottom-0 left-0 right-0 bg-white w-full rounded-t-2xl p-4 shadow-lg z-50"
         :class="{ 'kh': langStore.currentLang === 'kh' }">
-        
+
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-lg font-bold">{{ currentText.addEntryHeader }}</h3>
           <button @click="showAddModal = false"
@@ -71,8 +71,7 @@
           <!-- Submit Button -->
           <button
             class="w-full bg-green-500 text-white py-3 rounded flex items-center justify-center space-x-2 hover:bg-green-600 transition mt-2"
-            @click="submitEntry"
-            :disabled="isLoading">
+            @click="submitEntry" :disabled="isLoading">
             <Icon icon="mdi:check" width="20" height="20" />
             <span>{{ isLoading ? currentText.submitting : currentText.submit }}</span>
           </button>
@@ -119,7 +118,7 @@
         </div>
       </div>
     </transition>
-       <FloatingAddButton @toggle-add-modal="showAddModal = !showAddModal" />
+    <FloatingAddButton @toggle-add-modal="showAddModal = !showAddModal" />
   </div>
 </template>
 
@@ -178,12 +177,15 @@ export default defineComponent({
       this.$i18n.locale = lang;
       this.showLangModal = false;
     },
-    openCamera() {
+    openCamera(event?: Event) {
+      event?.stopPropagation();
       (this.$refs.cameraInput as HTMLInputElement).click();
     },
-    openGallery() {
+    openGallery(event?: Event) {
+      event?.stopPropagation();
       (this.$refs.galleryInput as HTMLInputElement).click();
     },
+
     handleCameraPhoto(event: Event) {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (file) this.addPreview(file);
