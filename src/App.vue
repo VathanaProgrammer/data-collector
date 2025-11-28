@@ -149,12 +149,9 @@ export default defineComponent({
       try {
         // Get current user ID from store
         const userStore = useUserStore();
-        console.log("Store object:", userStore);
-        console.log("Current user:", userStore.user);
 
         const userId = userStore.user?.id;
         const collector_id = userId;
-        console.log("User ID:", userId);
 
         // Get current geolocation (latitude, longitude)
         let latitude = null;
