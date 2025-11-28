@@ -3,8 +3,6 @@
 body {
   font-family: 'Roboto', ui-sans-serif, system-ui;
 }
-/* Khmer class - use Noto Sans Khmer first, then fallbacks */
 .kh {
-  font-family: 'Noto Sans Khmer', 'Siemreap', 'Roboto', ui-sans-serif, system-ui !important;
-  /* keep !important so mobile browsers actually use it for that element */
+  font-family: 'Battambang', system-ui;
 }
