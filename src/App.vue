@@ -119,7 +119,7 @@
         </div>
       </div>
     </transition>
-        <FloatingAddButton @show-add-modal="showAddModal = true" />
+       <FloatingAddButton @toggle-add-modal="showAddModal = !showAddModal" />
   </div>
 </template>
 
