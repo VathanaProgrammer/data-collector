@@ -58,6 +58,8 @@ export default defineComponent({
         } else {
           userStore.clearUser();
         }
+
+        console.log("Fetched user:", res.data.data);
       } catch (err) {
         userStore.clearUser();
         console.error("Fetch user failed:", err);
