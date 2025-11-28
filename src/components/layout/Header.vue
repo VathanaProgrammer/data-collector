@@ -17,7 +17,7 @@
       <template v-if="user">
         <!-- User icon -->
         <img
-          v-if="user.profile_url"
+          v-if="user.isAuthenticated"
           :src="user.profile_url"
           alt="User"
           class="w-8 h-8 rounded-full border border-white"

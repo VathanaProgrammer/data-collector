@@ -37,9 +37,11 @@
           <input v-model="nameInput" type="text" placeholder="Name" class="w-full p-3 rounded border border-gray-300" />
           <input v-model="phoneInput" type="tel" placeholder="Phone Number"
             class="w-full p-3 rounded border border-gray-300" />
+          <input v-model="addressInput" type="text" placeholder="Address details"
+            class="w-full p-3 rounded border border-gray-300" />
 
           <div class="flex space-x-2">
-            <button class="flex-1 bg-blue-600 text-white py-3 rounded" @click="openCamera">Take Photo</button>
+            <!-- <button class="flex-1 bg-blue-600 text-white py-3 rounded" @click="openCamera">Take Photo</button> -->
             <button class="flex-1 bg-gray-800 text-white py-3 rounded" @click="openGallery">Select Photos</button>
           </div>
 
@@ -90,6 +92,7 @@ import khFlag from "@/assets/images/kh.webp";
 import Header from "./components/layout/Header.vue";
 import Footer from "./components/layout/Footer.vue";
 import API from "./api";
+import { useUserStore } from "./store/userStore";
 
 interface PreviewFile extends File {
   preview: string;
@@ -104,6 +107,7 @@ export default defineComponent({
       showLangModal: false,
       nameInput: "",
       phoneInput: "",
+      addressInput: '',
       photos: [] as PreviewFile[],
       enFlag,
       khFlag,
@@ -143,13 +147,39 @@ export default defineComponent({
 
     async submitEntry() {
       try {
+        // Get current user ID from store
+        const userStore = useUserStore();
+        const userId = userStore?.user?.id; // adjust if using Pinia or Vuex differently
+
+        // Get current geolocation (latitude, longitude)
+        let latitude = null;
+        let longitude = null;
+        if (navigator.geolocation) {
+          await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+              pos => {
+                latitude = pos.coords.latitude;
+                longitude = pos.coords.longitude;
+                resolve(true);
+              },
+              err => {
+                console.warn("Geolocation failed:", err.message);
+                resolve(true); // continue even if geolocation fails
+              }
+            );
+          });
+        }
+
         const form = new FormData();
         form.append("name", this.nameInput);
         form.append("phone", this.phoneInput);
+        form.append("address_detail", this.addressInput);
+        form.append("latitude", latitude ?? "");
+        form.append("longitude", longitude ?? "");
+        form.append("user_id", userId);
 
         this.photos.forEach(file => {
           const fileName = file.name || `photo-${Date.now()}.jpg`;
-          const fileType = file.type || "image/jpeg"; // fallback for iPhone
           form.append("photos[]", file, fileName);
         });
 
@@ -160,21 +190,23 @@ export default defineComponent({
         // Clear inputs and revoke previews
         this.nameInput = "";
         this.phoneInput = "";
+        this.addressInput = "";
         this.photos.forEach(p => URL.revokeObjectURL(p.preview));
         this.photos = [];
         this.showAddModal = false;
 
-        // Show alert
         if (res.data.success) {
           alert(res.data.msg || "Entry submitted successfully!");
         } else {
           alert(res.data.msg || "Submission failed");
         }
+
       } catch (err: any) {
         console.error("Upload failed:", err);
         alert(err.response?.data?.msg || "An error occurred while submitting entry.");
       }
     }
+
   }
 });
 </script>
