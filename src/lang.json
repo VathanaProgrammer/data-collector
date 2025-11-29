@@ -17,7 +17,9 @@
     "error": "Error",
     "success": "Success",
     "welcome": "Welcome",
-    "ok": "OK"
+    "ok": "OK",
+    "entrySubmittedSuccess": "submitted successfully!",
+    "entrySubmittedError": "Submit failed. Please try again."
   },
   "kh": {
     "addEntryHeader": "បន្ថែមការដាក់ចេញថ្មី",
@@ -37,6 +39,8 @@
     "error": "កំហុស",
     "success": "ជោគជ័យ",
     "welcome": "សូមស្វាគមន៍",
-    "ok": "យល់ព្រម"
+    "ok": "យល់ព្រម",
+    "entrySubmittedSuccess": "បានដាក់ស្នើដោយជោគជ័យ!",
+    "entrySubmittedError": "ការដាក់ស្នើបរាជ័យ។ សូមព្យាយាមម្តងទៀត។"
   }
 }

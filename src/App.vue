@@ -258,7 +258,17 @@ export default defineComponent({
         this.photos = [];
         this.showAddModal = false;
 
-        alert(res.data.msg || "Entry submitted successfully!");
+        if(res.data.success === 1){
+          showAlert({
+            type: "success",
+            messageKey: "entrySubmittedSuccess",
+          });
+        } else {
+          showAlert({
+            type: "error",
+            messageKey: "entrySubmittedError",
+          });
+        }
       } catch (err: any) {
         console.error("Upload failed:", err);
         alert(err.response?.data?.msg || "An error occurred while submitting entry.");

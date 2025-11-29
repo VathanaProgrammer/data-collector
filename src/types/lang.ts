@@ -19,6 +19,8 @@ export interface LangStrings {
   info: string;
   welcome: string;
   ok: string;
+  entrySubmittedSuccess: string;
+  entrySubmittedError: string;
 }
 
 export interface LangData {
