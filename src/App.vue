@@ -28,7 +28,8 @@
         :class="{ 'kh': langStore.currentLang === 'kh' }">
 
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-semibold text-gray-800" :class="{ 'kh': langStore.currentLang === 'kh' } ">{{ currentText.addEntryHeader }}</h3>
+          <h3 class="text-lg font-semibold text-gray-800" :class="{ 'kh': langStore.currentLang === 'kh' }">{{
+            currentText.addEntryHeader }}</h3>
           <button @click="showAddModal = false"
             class="text-gray-500 p-3 text-2xl hover:text-gray-700 rounded-full flex items-center justify-center">
             &times;
@@ -138,6 +139,7 @@ import type { LangData } from "@/types/lang";
 import { Icon } from '@iconify/vue';
 import FloatingAddButton from "./components/FloatingAddButton.vue";
 import AlertModal from "./components/AlertModal.vue";
+import { showAlert } from "@/alertService";
 
 const langData = langDataJson as LangData;
 
@@ -211,7 +213,10 @@ export default defineComponent({
     },
     async submitEntry() {
       if (this.photos.length === 0) {
-        alert("Please select at least one photo before submitting.");
+        showAlert({
+          type: "error",
+          messageKey: "pleaseAddPhoto",
+        })
         return;
       }
       this.isLoading = true;
@@ -266,7 +271,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 main {
   height: calc(100vh - 128px);
   overflow: hidden;

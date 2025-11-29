@@ -1,11 +1,14 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "ignoreDeprecations": "6.0"
-    ,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "ignoreDeprecations": "6.0",
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "*"
+      ]
     },
     /* required so allowImportingTsExtensions is allowed */
     "noEmit": true,

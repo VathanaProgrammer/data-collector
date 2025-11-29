@@ -12,6 +12,13 @@ export interface LangStrings {
   close: string;
   submitting: string;
   logout: string;
+  pleaseAddPhoto: string;
+  welcomeBack: string;
+  success: string;
+  error: string;
+  info: string;
+  welcome: string;
+  ok: string;
 }
 
 export interface LangData {

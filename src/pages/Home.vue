@@ -10,10 +10,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useUserStore } from '../store/userStore';
-import { alert } from "@/alertService";
+import { showAlert } from "@/alertService";
 export default defineComponent({
   name: "Home",
-  components: {  },
+  components: {},
   data() {
     return {
       alertVisible: false,
@@ -24,10 +24,11 @@ export default defineComponent({
   },
   mounted() {
     const userStore = useUserStore();
-    
-    alert({
+
+    showAlert({
       type: "info",
-      message: `Welcome back, ${userStore.user?.username || 'User'}!`,
+      messageKey: "welcomeBack",
+      messageParams: { username: userStore.user?.username || "User" },
     });
   },
 });
@@ -42,6 +43,6 @@ export default defineComponent({
 .sob-text {
   /* Big shadow for each letter */
   text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3),
-               6px 6px 12px rgba(0, 0, 0, 0.2);
+    6px 6px 12px rgba(0, 0, 0, 0.2);
 }
 </style>

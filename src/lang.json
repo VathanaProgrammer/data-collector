@@ -10,7 +10,14 @@
     "selectLanguage": "Select Language",
     "close": "Close",
     "submitting": "Submitting...",
-    "logout": "Logout"
+    "logout": "Logout",
+    "pleaseAddPhoto": "Please select at least one photo before submitting.",
+    "welcomeBack": "Welcome back, {username}!",
+    "info": "Info",
+    "error": "Error",
+    "success": "Success",
+    "welcome": "Welcome",
+    "ok": "OK"
   },
   "kh": {
     "addEntryHeader": "បន្ថែមការដាក់ចេញថ្មី",
@@ -23,6 +30,13 @@
     "selectLanguage": "ជ្រើសរើសភាសា",
     "close": "បិទ",
     "submitting": "កំពុងដាក់ស្នើ...",
-    "logout": "ចាកចេញ"
+    "logout": "ចាកចេញ",
+    "pleaseAddPhoto": "សូមជ្រើសរើសរូបភាពយ៉ាងហោចណាស់មួយរូបមុនពេលដាក់ស្នើ។",
+    "welcomeBack": "សូមស្វាគមន៍ត្រឡប់មកវិញ, {username}!",
+    "info": "ព័ត៌មាន",
+    "error": "កំហុស",
+    "success": "ជោគជ័យ",
+    "welcome": "សូមស្វាគមន៍",
+    "ok": "យល់ព្រម"
   }
 }

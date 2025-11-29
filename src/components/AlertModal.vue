@@ -1,57 +1,56 @@
 <template>
   <transition name="fade">
-    <div v-if="visible" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div v-if="alertState.visible" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 shadow-lg w-80 text-center">
-        <div class="flex justify-center mb-4">
-          <Icon v-if="type==='success'" icon="mdi:check-circle-outline" class="text-green-500" width="48" height="48"/>
-          <Icon v-if="type==='error'" icon="mdi:alert-circle-outline" class="text-red-500" width="48" height="48"/>
-          <Icon v-if="type==='info'" icon="mdi:information-outline" class="text-blue-500" width="48" height="48"/>
+        <div class="flex items-center justify-center mb-4">
+          <Icon
+            v-if="alertState.type === 'success'"
+            icon="mdi:check-circle-outline"
+            class="text-green-500"
+            width="32"
+            height="32"
+          />
+          <Icon
+            v-else-if="alertState.type === 'error'"
+            icon="mdi:alert-circle-outline"
+            class="text-red-500"
+            width="32"
+            height="32"
+          />
+          <Icon
+            v-else
+            icon="mdi:information-outline"
+            class="text-blue-500"
+            width="32"
+            height="32"
+          />
         </div>
-        <h3 class="text-lg font-bold mb-4">{{ computedTitle }}</h3>
-        <p class="mb-6">{{ message }}</p>
-        <button @click="close" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">OK</button>
+        <h3 :class="{ 'kh' : alertState.isKhmer}" class="text-lg font-bold mb-2">{{ alertState.title }}</h3>
+        <p :class="{ 'kh' : alertState.isKhmer}" class="text-gray-600 mb-4">{{ alertState.message }}</p>
+        <button
+          @click="closeAlert"
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          {{ currentLang === 'kh' ? langData.kh.ok : langData.en.ok }}
+        </button>
       </div>
     </div>
   </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { Icon } from '@iconify/vue';
-import { alertService } from "@/alertService";
+import { defineComponent } from "vue";
+import { Icon } from "@iconify/vue";
+import langDataJson from "@/lang.json" with { type: "json" };
+import { useLangStore } from "@/store/langStore";
+import { alertState, closeAlert } from "@/alertService";
 
 export default defineComponent({
-  name: 'AlertModal',
+  name: "AlertModal",
   components: { Icon },
-  data() {
-    return {
-      visible: false,
-      message: '',
-      type: 'success' as 'success' | 'error' | 'info'
-    };
-  },
-  computed: {
-    computedTitle(): string {
-      switch (this.type) {
-        case 'success': return 'Success';
-        case 'error': return 'Error';
-        case 'info': return 'Info';
-      }
-      return '';
-    }
-  },
-  created() {
-    alertService.register(this);
-  },
-  methods: {
-    show(options: { type?: 'success' | 'error' | 'info'; message: string }) {
-      this.message = options.message;
-      this.type = options.type || 'success';
-      this.visible = true;
-    },
-    close() {
-      this.visible = false;
-    }
+  setup() {
+    const langStore = useLangStore();
+    return { alertState, closeAlert, langData: langDataJson, currentLang: langStore.currentLang };
   }
 });
 </script>
