@@ -25,7 +25,7 @@ export default defineComponent({
   mounted() {
     const userStore = useUserStore();
 
-    if (!userStore.isAuthenticated) {
+    if (userStore.isAuthenticated) {
       showAlert({
         type: "info",
         messageKey: "welcomeBack",
