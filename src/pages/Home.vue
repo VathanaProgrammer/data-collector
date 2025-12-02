@@ -25,11 +25,13 @@ export default defineComponent({
   mounted() {
     const userStore = useUserStore();
 
-    showAlert({
-      type: "info",
-      messageKey: "welcomeBack",
-      messageParams: { username: userStore.user?.username || "User" },
-    });
+    if (!userStore.isAuthenticated) {
+      showAlert({
+        type: "info",
+        messageKey: "welcomeBack",
+        messageParams: { username: userStore.user?.username || "User" },
+      });
+    }
   },
 });
 </script>
